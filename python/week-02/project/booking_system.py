@@ -147,7 +147,7 @@ past_customer_orders = []
 def filter_movies_by_genre(genre):
 
     return 0
-#Created By @NkSecurity Start ====>.
+
 #Instead, the program should show a short, clear message explaining what went wrong.
 def filter_movies_by_ticket_price(ticket_price):
     filtered_movies = []
@@ -195,8 +195,6 @@ def calculate_total_cost_of_fees(cost_of_tickets, cost_of_snacks, fee_rates = [0
     total_fees = final_total - subtotal
     return total_fees
 
-#Created By @NkSecurity Finis ====<.
-
 def calculate_total_cost_of_booking(cost_of_tickets, cost_of_snacks, cost_of_fees):
     subtotal = cost_of_tickets + cost_of_snacks
     total = subtotal + cost_of_fees
@@ -209,6 +207,9 @@ def update_movie_list(movie_name, show_time, ticket_quantity):
     return 0
 
 def booking_ticket():
+    customer_name = input('Enter the customer name: ')
+    order_information['customer_name'] = customer_name
+
     movie_name = input('Enter the movie name to book a ticket: ')
 
     #Someone enters a customer or movie that doesn't exist in the system.
@@ -240,6 +241,15 @@ def booking_ticket():
         return 0
 
     update_movie_list(movie_name, show_time, ticket_quantity)
+
+    order_information['movie_names'] = movie_name
+    order_information['movie_show_time'] = show_time
+    order_information['ticket_quantity'] = ticket_quantity
+    order_information['cost_of_tickets'] = calculate_total_cost_of_tickets(
+        ticket_quantity, showtime_info['ticket_price']
+    )
+
+    print(f'\nBooked {ticket_quantity} ticket(s) for "{movie_name}" at {show_time}.')
 
     return 0
 
@@ -375,7 +385,8 @@ while True:
         if len(order_snacks_list) == 0:
             print('No snacks were ordered.')
         else:
-            calculate_total_cost_of_snacks(order_snacks_list)
+            order_information['snacks'] = order_snacks_list
+            order_information['cost_of_snacks'] = calculate_total_cost_of_snacks(order_snacks_list)
     elif(user_selection == '5'):
         check_out_order(order_information)
     elif(user_selection == '6'):

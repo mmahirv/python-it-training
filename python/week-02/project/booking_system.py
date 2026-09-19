@@ -225,6 +225,8 @@ def booking_ticket():
         print(f'Movie "{movie_name}" is not available in the movie list.')
         return 0
 
+    order_information['movie_names'] = movie_name
+
     show_time = input('Enter the show time (HH:MM) to book a ticket: ')
 
     movie = next(m for m in movie_list_onshow if m['title'] == movie_name)
@@ -233,6 +235,8 @@ def booking_ticket():
     if show_time not in [st['start_time'] for st in movie['show_times']]:
         print(f'Show time "{show_time}" is not available for movie "{movie_name}".')
         return 0
+
+    order_information['movie_show_time'] = show_time
 
     while True:
         quantity_input = input('Enter the number of tickets to book: ')
@@ -248,6 +252,8 @@ def booking_ticket():
         print(f'Cannot book {ticket_quantity} tickets. Only {showtime_info["seats_number"]} seats are available.')
         return 0
 
+    order_information['ticket_quantity'] = ticket_quantity
+    order_information['cost_of_tickets'] = calculate_total_cost_of_tickets(ticket_quantity, showtime_info['ticket_price'])
     update_movie_list(movie_name, show_time, ticket_quantity)
 
     return 0
@@ -370,21 +376,26 @@ while True:
         genre = input('Enter a genre to filter movies: ')
         filtered_movies = filter_movies_by_genre(genre)
 
-        print(f'Filtered movies by genre "{genre}": {filtered_movies}')
+        for movie in filtered_movies:
+            print(f'Title: {movie["title"]}, Genre: {movie["genre"]}, Show Times: {[st["start_time"] for st in movie["show_times"]]}')
+
     elif(user_selection == '2'):
         ticket_price = float(input('Enter a ticket price to filter movies: '))
         filtered_movies = filter_movies_by_ticket_price(ticket_price)
 
-        print(f'Filtered movies by ticket price "{ticket_price}": {filtered_movies}')
+        for movie in filtered_movies:
+            print(f'Title: {movie["title"]}, Genre: {movie["genre"]}, Show Time: {movie["start_time"]}, Ticket Price: ${movie["ticket_price"]:.2f}')
     elif(user_selection == '3'):
         booking_ticket()
     elif(user_selection == '4'):
         order_snacks_list = take_snack_order()
+        order_information['snacks'] = order_snacks_list
+
 
         if len(order_snacks_list) == 0:
             print('No snacks were ordered.')
         else:
-            calculate_total_cost_of_snacks(order_snacks_list)
+            order_information['cost_of_snacks'] = calculate_total_cost_of_snacks(order_snacks_list)
     elif(user_selection == '5'):
         check_out_order(order_information)
     elif(user_selection == '6'):

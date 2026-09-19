@@ -145,8 +145,16 @@ past_customer_orders = []
 #Someone searches for a genre we don't currently have any movies in — this should just show "no results," not break the program
 #Instead, the program should show a short, clear message explaining what went wrong.
 def filter_movies_by_genre(genre):
+    filtered_movies = []
 
-    return 0
+    for movie in movie_list_onshow:
+        if movie['genre'].lower() == genre.strip().lower():
+            filtered_movies.append(movie)
+
+    if not filtered_movies:
+        print(f'No movies found for genre "{genre}".')
+
+    return filtered_movies
 
 #Instead, the program should show a short, clear message explaining what went wrong.
 def filter_movies_by_ticket_price(ticket_price):

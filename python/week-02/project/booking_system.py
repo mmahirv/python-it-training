@@ -211,7 +211,17 @@ def calculate_total_cost_of_booking(cost_of_tickets, cost_of_snacks, cost_of_fee
 #Someone tries to book more seats than are actually available.
 #Instead, the program should show a short, clear message explaining what went wrong.
 def update_movie_list(movie_name, show_time, ticket_quantity):
-
+    for movie in movie_list_onshow:
+        if movie['title'] == movie_name:
+            for show_time_info in movie['show_times']:
+                if show_time_info['start_time'] == show_time:
+                    if ticket_quantity > show_time_info['seats_number']:
+                        print(f'Cannot book {ticket_quantity} tickets. Only {show_time_info["seats_number"]} seats are available.')
+                        return 0
+                    else:
+                        show_time_info['seats_number'] -= ticket_quantity
+                        print(f'Successfully booked {ticket_quantity} tickets for "{movie_name}" at {show_time}.')
+                        return 1
     return 0
 
 def booking_ticket():
@@ -260,7 +270,7 @@ def booking_ticket():
 
 #Someone tries to check out an order that has no movie selected yet.
 #Instead, the program should show a short, clear message explaining what went wrong.
-def check_out_order(order_information):
+def check_out_order():
     if not order_information['movie_names']:
         print("No movie has been selected for this order yet. Please book a ticket first.")
         return None
@@ -314,6 +324,7 @@ def check_out_order(order_information):
     past_customer_orders.append(order_information.copy())
 
     print("\nPayment complete, enjoy the show!")
+
     return order_information
 
 def print_snack_bar_list(snack_bar_list):
@@ -397,7 +408,7 @@ while True:
         else:
             order_information['cost_of_snacks'] = calculate_total_cost_of_snacks(order_snacks_list)
     elif(user_selection == '5'):
-        check_out_order(order_information)
+        check_out_order()
     elif(user_selection == '6'):
         print('Exiting the Movie Booking System. Goodbye!')
         break

@@ -16,5 +16,6 @@ def search_books(books):
 
 def delete_book(books):
     #Delete book taking from user book name
+    #If the book is exists delete and return True otherwise return False
 
-    return None
+    return False

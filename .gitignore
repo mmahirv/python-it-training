@@ -2,6 +2,3 @@
 python/week-03/project/library_app/__pycache__/
 *.py[cod]
 *$py.class
-
-# Veri klasörü (isteğe bağlı)
-python/week-03/project/data/

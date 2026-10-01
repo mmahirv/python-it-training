@@ -1,0 +1,42 @@
+{
+    "books": [
+        {
+            "book_id": 1,
+            "title": "Yukselis ve Cokus",
+            "author": "Anonim",
+            "publication_year": 2026,
+            "is_borrowed": true,
+            "borrowed_by": 5,
+            "type": "novel",
+            "genre": "Aksiyon"
+        },
+        {
+            "book_id": 2,
+            "title": "Yukselis ve Cokus",
+            "author": "Anonim",
+            "publication_year": 2026,
+            "is_borrowed": true,
+            "borrowed_by": 5,
+            "type": "magazine",
+            "issue": 2
+        },
+        {
+            "book_id": 3,
+            "title": "Yukselis ve Cokus",
+            "author": "Anonim",
+            "publication_year": 2026,
+            "is_borrowed": false,
+            "borrowed_by":  null,
+            "type": "book"
+        }
+    ],
+    
+    "users": [
+        {
+            "user_id": 5,
+            "name": "Ahmet",
+            "password": "1234",
+            "borrowed_books": [1, 2]
+        }
+    ]
+}

@@ -1,20 +1,14 @@
 import json
-
 from .book import Book, Magazine, Novel
 from .user import User
 
 class Library:
-    def __init__(self):
-        self.books = []
-        self.users = []
+    def __init__(self , name, books=[], users=[]):
+        self.name = name
+        self.books = books
+        self.users = users
 
-    # book objesini sisteme ekler
-    # book_id üretir:
-    # max(existing book_ids) + 1
-    # Library boşsa ID = 1
-    # book type'a göre Book, Novel veya Magazine objesi oluşturur
     def add_book(self, title, author, publication_year, book_type="book", genre=None, issue=None):
-
         if len(self.books) == 0:
             book_id = 1
         else:
@@ -28,52 +22,47 @@ class Library:
 
         if book_type == "novel":
             book = Novel(
-                book_id,
                 title,
                 author,
                 publication_year,
-                genre
+                genre,
+                book_id,
             )
 
         elif book_type == "magazine":
             book = Magazine(
-                book_id,
                 title,
                 author,
                 publication_year,
-                issue
+                issue,
+                book_id,
             )
 
         else:
             book = Book(
-                book_id,
                 title,
                 author,
-                publication_year
+                publication_year,
+                book_id,
             )
 
         self.books.append(book)
 
-    # user_id üretir:
-    # max(existing user_ids) + 1
-    # Library boşsa ID = 1
-    #
-    # name'in unique olup olmadığını kontrol eder
-    # kullanıcı adının boş olup olmadığını kontrol eder
-    # password'un geçerli olup olmadığını kontrol eder
-    #
-    # başarılıysa True
-    # başarısızsa False döndürür
+        return book
+    
     def add_user(self, name, password):
 
         if name is None or name.strip() == "":
+            print("Username cannot be empty.")
             return False
 
         for user in self.users:
             if user.name == name:
+                print("Username already exists.")
                 return False
 
         if password is None or password == "":
+            print("Password cannot be empty.")  
             return False
 
         if len(self.users) == 0:
@@ -87,27 +76,30 @@ class Library:
 
             user_id = max_id + 1
 
-        user = User(user_id, name, password)
+        user = User(name, password, user_id)
 
         self.users.append(user)
 
-        return True
+        return user
 
     # kullanici adi ve sifre kontrolü yapar
     # user objesini döndürür
     # eger user yoksa None döndürür
     def login(self, name, password):
-
+        
         for user in self.users:
             if user.name == name and user.password == password:
                 return user
-
+            else:
+                print("Invalid username or password. Please try again.")
+                return None
+        
+        print("We dont have any users yet. Please create an account first.")
         return None
 
     # Library içindeki books ve users verilerini
     # JSON formatına çevirip kaydeder
-    def save(self):
-
+    def save(self, file_path="../data/library.json"):
         data = {
             "books": [],
             "users": []
@@ -119,7 +111,7 @@ class Library:
         for user in self.users:
             data["users"].append(user.to_dict())
 
-        with open("data.json", "w", encoding="utf-8") as file:
+        with open(file_path, "w", encoding="utf-8") as file:
             json.dump(
                 data,
                 file,
@@ -131,10 +123,9 @@ class Library:
     # Book / Novel / Magazine objelerini oluşturur
     # User objelerini oluşturur
     # ID'ler üzerinden User ↔ Book ilişkilerini tekrar kurar
-    def load(self):
-
+    def load(self, file_path="../data/library.json"):
         try:
-            with open("data.json", "r", encoding="utf-8") as file:
+            with open(file_path, "r", encoding="utf-8") as file:
                 data = json.load(file)
         except FileNotFoundError:
             return
@@ -144,45 +135,40 @@ class Library:
 
         # Önce user objelerini oluşturuyoruz
         for user_data in data["users"]:
-
             user = User(
-                user_data["user_id"],
                 user_data["name"],
-                user_data["password"]
+                user_data["password"],
+                user_data["user_id"],
             )
 
             self.users.append(user)
 
         # Sonra book objelerini oluşturuyoruz
         for book_data in data["books"]:
-
             if book_data["type"] == "novel":
-
                 book = Novel(
-                    book_data["book_id"],
                     book_data["title"],
                     book_data["author"],
                     book_data["publication_year"],
-                    book_data["genre"]
+                    book_data["genre"],
+                    book_data["book_id"],
                 )
 
             elif book_data["type"] == "magazine":
-
                 book = Magazine(
-                    book_data["book_id"],
                     book_data["title"],
                     book_data["author"],
                     book_data["publication_year"],
-                    book_data["issue"]
+                    book_data["issue"],
+                    book_data["book_id"],
                 )
 
             else:
-
                 book = Book(
-                    book_data["book_id"],
                     book_data["title"],
                     book_data["author"],
-                    book_data["publication_year"]
+                    book_data["publication_year"],
+                    book_data["book_id"],
                 )
 
             self.books.append(book)
@@ -203,36 +189,24 @@ class Library:
 
         # Book -> User ilişkisini kuruyoruz
         for book_data in data["books"]:
-
             book_id = book_data["book_id"]
             borrowed_by = book_data["borrowed_by"]
 
             if borrowed_by is not None:
-
                 book = books_by_id[book_id]
                 user = users_by_id[borrowed_by]
 
                 book.borrowed_by = user
                 book.is_borrowed = True
+                user.borrowed_books.append(book)
 
         # User -> Book ilişkisini kuruyoruz
-        for user_data in data["users"]:
-
-            user_id = user_data["user_id"]
-            user = users_by_id[user_id]
-
-            for book_id in user_data["borrowed_books"]:
-
-                book = books_by_id[book_id]
-
-                user.borrowed_books.append(book)
 
     # book title alır
     # Library içindeki books listesini arar
     # bulursa aynı Book objesini döndürür
     # bulamazsa None döndürür
     def find_book(self, title):
-
         for book in self.books:
             if book.title == title:
                 return book
@@ -242,7 +216,9 @@ class Library:
     # Library içindeki bütün kitapları gösterir
     # Her book için show_info() çağırabilir
     def show_all_books(self):
-
         for book in self.books:
             book.show_info()
-            print("--------------------")
+            print()
+
+    def list_books(self):
+        self.show_all_books()

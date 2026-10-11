@@ -1,12 +1,11 @@
 class User:
 
 
-    def __init__(self, name, password, user_id=None):
-        
+    def __init__(self, name, password, user_id=None, borrowed_books=None):
         self.user_id = user_id
         self.name = name
         self.password = password
-        self.borrowed_books = []
+        self.borrowed_books = list(borrowed_books) if borrowed_books is not None else []
 
     
     def borrow_book(self, book):

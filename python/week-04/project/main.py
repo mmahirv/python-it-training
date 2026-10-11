@@ -21,7 +21,7 @@ menu_login= """
         3 - exit
         """
         
-library.load_data(LIBRARY_PATH) 
+library.load(LIBRARY_PATH) 
 user = None
       
 while user is None:
@@ -29,7 +29,7 @@ while user is None:
     user_operation = input("Choose an operation: ").strip()
     
     if(user_operation == "1"):
-        user_name = input("Enter your name: ").strip().lower()
+        user_name = input("Enter your name: ").strip()
         user_password = input("Enter your password: ").strip()
         
         user = library.login(user_name, user_password)
@@ -43,9 +43,9 @@ while user is None:
             user_name = input("Enter your name: ").strip().lower()
             user_password = input("Enter your password: ").strip()
 
-            user = User(user_name, user_password)
+            user = library.add_user(user_name, user_password)
 
-            if library.add_user(user):
+            if user:
                 print(f"Account created successfully for {user_name.capitalize()}. You can now log in.")
                 
                 break

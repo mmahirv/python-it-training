@@ -2,41 +2,101 @@
     "books": [
         {
             "book_id": 1,
-            "title": "Yukselis ve Cokus",
+            "title": "Sefiller",
             "author": "Anonim",
-            "publication_year": 2026,
+            "publication_year": 2023,
             "is_borrowed": true,
-            "borrowed_by": 5,
+            "borrowed_by": 1,
             "type": "novel",
-            "genre": "Aksiyon"
+            "genre": "Drama"
         },
         {
             "book_id": 2,
-            "title": "Yukselis ve Cokus",
+            "title": "Fareli Koyunun Maceraları",
             "author": "Anonim",
-            "publication_year": 2026,
+            "publication_year": 2016,
             "is_borrowed": true,
-            "borrowed_by": 5,
-            "type": "magazine",
-            "issue": 2
+            "borrowed_by": 1,
+            "type": "novel",
+            "genre": "Adventure"
         },
         {
             "book_id": 3,
             "title": "Yukselis ve Cokus",
             "author": "Anonim",
-            "publication_year": 2026,
+            "publication_year": 1996,
             "is_borrowed": false,
-            "borrowed_by":  null,
+            "borrowed_by": null,
+            "type": "magazine",
+            "issue": "2023-06"
+        },
+        {
+            "book_id": 4,
+            "title": "Dunya Tarihi",
+            "author": "Anonim",
+            "publication_year": 2000,
+            "is_borrowed": false,
+            "borrowed_by": null,
             "type": "book"
+        },
+        {
+            "book_id": 5,
+            "title": "Bilim ve Teknoloji",
+            "author": "Anonim",
+            "publication_year": 2010,
+            "is_borrowed": true,
+            "borrowed_by": 2,
+            "type": "book"
+        }, 
+        {
+            "book_id": 6,
+            "title": "Bilim Kurgu",
+            "author": "Anonim",
+            "publication_year": 2015,
+            "is_borrowed": false,
+            "borrowed_by": null,
+            "type": "magazine",
+            "issue": "2023-06"
+        },
+        {
+            "book_id": 7,
+            "title": "Tarih",
+            "author": "Anonim",
+            "publication_year": 2018,
+            "is_borrowed": false,
+            "borrowed_by": null,
+            "type": "book"
+        },
+        {
+            "book_id": 8,
+            "title": "Roman",
+            "author": "Anonim",
+            "publication_year": 2020,
+            "is_borrowed": true,
+            "borrowed_by": 3,
+            "type": "novel",
+            "genre": "Romance"
         }
     ],
-    
+
     "users": [
         {
-            "user_id": 5,
+            "user_id": 1,
             "name": "Ahmet",
             "password": "1234",
-            "borrowed_books": [1, 2]
+            "borrowed_books": [1,2]
+        },
+        {
+            "user_id": 2,
+            "name": "Mehmet",
+            "password": "5678",
+            "borrowed_books": [5]
+        },
+        {
+            "user_id": 3,
+            "name": "Ayse",
+            "password": "abcd+4?cetin5", 
+            "borrowed_books": [8]
         }
     ]
 }
